@@ -5,6 +5,8 @@
 class Profile(object):
     """Class for profiles"""
     def __init__(self, name, phone, company):
+        if(len(name) <3):
+            raise InvalidArgumentError('Must have at least 3 chars')
         self.name = name
         self.phone = phone
         self.company = company
@@ -25,6 +27,8 @@ class Profile(object):
         profiles = []
         for line in file:
             values = line.split(',')
+            if(len(values) is not 3):
+                raise ValueError('Line on file %s must have 3 values' % name_file)
             profiles.append(classe(*values))
         file.close()
         return profiles
@@ -37,6 +41,13 @@ class Profile_Vip(Profile):
 
     def get_credit(self):
         return super(Profile_Vip, self).get_likes() * 10.0
+
+class InvalidArgumentError(Exception):
+    def __init__(self, message):
+        self.message = message
+
+    def __str__(self):
+        return repr(self.message)
 
 class Date(object):
     """Formating a Date"""
